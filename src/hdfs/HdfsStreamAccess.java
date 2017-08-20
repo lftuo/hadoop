@@ -3,8 +3,11 @@ package hdfs;
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,6 +23,8 @@ public class HdfsStreamAccess {
     static FileSystem fs = null;
     Configuration conf = null;
 
+    private static Logger logger = LoggerFactory.getLogger(HdfsStreamAccess.class);
+
     /**
      * 出事化hdfs
      * @throws IOException
@@ -28,6 +33,8 @@ public class HdfsStreamAccess {
      */
     @Before
     public void init() throws IOException, URISyntaxException, InterruptedException {
+        PropertyConfigurator.configure("log4j.properties");
+
         conf = new Configuration();
         conf.set("dfs.replication", "1");
         conf.set("dfs.permissions","false");
@@ -44,7 +51,19 @@ public class HdfsStreamAccess {
     @Test
     public void testDownload() throws IOException {
         FSDataInputStream fsDataInputStream = fs.open(new Path("/streamupload.txt"));
-        FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\tuotuo\\Desktop\\streamupload");
+        FileOutputStream fileOutputStream = new FileOutputStream("C:/Users/tuotuo/Desktop/streamupload");
         IOUtils.copy(fsDataInputStream,fileOutputStream);
+    }
+
+    /**
+     * 按字节读取
+     * @throws IOException
+     */
+    @Test
+    public void testRandomAccess() throws IOException {
+        FSDataInputStream inputStream = fs.open(new Path("/streamupload.txt"));
+        inputStream.seek(20);
+        FileOutputStream outputStream = new FileOutputStream("C:/Users/tuotuo/Desktop/ndomread.txt");
+        IOUtils.copy(inputStream,outputStream);
     }
 }
