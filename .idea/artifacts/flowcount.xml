@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="flowcount">
+    <output-path>$PROJECT_DIR$/out/artifacts/flowcount</output-path>
+    <root id="archive" name="flowcount.jar">
+      <element id="module-output" name="hadoop" />
+    </root>
+  </artifact>
+</component>
