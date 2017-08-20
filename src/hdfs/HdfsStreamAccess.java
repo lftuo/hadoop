@@ -2,13 +2,12 @@ package hdfs;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,5 +39,12 @@ public class HdfsStreamAccess {
         FSDataOutputStream fsDataOutputStream = fs.create(new Path("/streamupload.txt"));
         FileInputStream fileInputStream = new FileInputStream("F:/test/streamupload.txt");
         IOUtils.copy(fileInputStream,fsDataOutputStream);
+    }
+
+    @Test
+    public void testDownload() throws IOException {
+        FSDataInputStream fsDataInputStream = fs.open(new Path("/streamupload.txt"));
+        FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\tuotuo\\Desktop\\streamupload");
+        IOUtils.copy(fsDataInputStream,fileOutputStream);
     }
 }
