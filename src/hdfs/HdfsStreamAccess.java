@@ -66,4 +66,15 @@ public class HdfsStreamAccess {
         FileOutputStream outputStream = new FileOutputStream("C:/Users/tuotuo/Desktop/ndomread.txt");
         IOUtils.copy(inputStream,outputStream);
     }
+
+    /**
+     * 打印到控制台
+     * @throws IOException
+     */
+    @Test
+    public void printConsole() throws IOException {
+        FSDataInputStream inputStream = fs.open(new Path("/streamupload.txt"));
+        inputStream.seek(20);
+        IOUtils.copy(inputStream,System.out);
+    }
 }
