@@ -92,13 +92,23 @@ public class HdfsClientTest {
 	public void testLs() throws IOException {
 		RemoteIterator<LocatedFileStatus> statusRemoteIterator = fs.listFiles(new Path("/"),true);
 		while (statusRemoteIterator.hasNext()){
-			LocatedFileStatus status = statusRemoteIterator.next();
-			System.out.println("FileName:" + status.getPath());
-			System.out.println("BlockSize:" + status.getBlockSize());
-			System.out.println("Owner:"+status.getOwner());
-			System.out.println("Replication:"+status.getReplication());
-			System.out.println("Permission:"+status.getPermission());
+			LocatedFileStatus fileStatus = statusRemoteIterator.next();
+			System.out.println("FileName:" + fileStatus.getPath());
+			System.out.println("BlockSize:" + fileStatus.getBlockSize());
+			System.out.println("Owner:"+fileStatus.getOwner());
+			System.out.println("Replication:"+fileStatus.getReplication());
+			System.out.println("Permission:"+fileStatus.getPermission());
 			System.out.println("--------------------------------");
+			BlockLocation[] blockLocations = fileStatus.getBlockLocations();
+			for (BlockLocation blocklocation : blockLocations) {
+				System.out.println("块起始偏移量：" + blocklocation.getOffset());
+				System.out.println("块长度："+blocklocation.getLength());
+				// 块所在datanode节点
+				String[] datanodes = blocklocation.getHosts();
+				for (String datanode : datanodes){
+					System.out.println("datanode:"+datanode);
+				}
+			}
 		}
 	}
 
