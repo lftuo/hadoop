@@ -1,12 +1,13 @@
 package mr.flowcount.bean;
 
 import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class FlowBean implements Writable{
+public class FlowBean implements WritableComparable<FlowBean>{
 
     private long upFlow;
     private long dFlow;
@@ -18,6 +19,12 @@ public class FlowBean implements Writable{
     public FlowBean() {}
 
     public FlowBean(long upFlow, long dFlow) {
+        this.upFlow = upFlow;
+        this.dFlow = dFlow;
+        this.sumFlow = upFlow + dFlow;
+    }
+
+    public void setFlow(long upFlow, long dFlow) {
         this.upFlow = upFlow;
         this.dFlow = dFlow;
         this.sumFlow = upFlow + dFlow;
@@ -75,5 +82,10 @@ public class FlowBean implements Writable{
     @Override
     public String toString() {
         return upFlow + "\t" +dFlow + "\t" + sumFlow;
+    }
+
+    @Override
+    public int compareTo(FlowBean o) {
+        return this.sumFlow>o.getSumFlow()?-1:1;
     }
 }

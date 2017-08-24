@@ -44,6 +44,7 @@ public class FlowCount{
             FlowBean resultBean = new FlowBean(sum_upFlow,sum_downFlow);
             context.write(key,resultBean);
         }
+
     }
 
 
